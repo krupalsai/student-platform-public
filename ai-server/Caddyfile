@@ -1,0 +1,15 @@
+# Automatic HTTPS (Let's Encrypt) for AI_DOMAIN, e.g. myname.duckdns.org.
+{$AI_DOMAIN} {
+	# Only the two endpoints the app uses, and only with the secret token.
+	@allowed {
+		path /v1/chat/completions /api/tags
+		header Authorization "Bearer {$AI_TOKEN}"
+	}
+	handle @allowed {
+		reverse_proxy ollama:11434
+	}
+	# Everything else — no token, wrong token, model management, pulls — is refused.
+	handle {
+		respond "Unauthorized" 401
+	}
+}

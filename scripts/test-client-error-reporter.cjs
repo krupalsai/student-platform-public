@@ -1,0 +1,21 @@
+// Item #240: the app reports its own crashes and reload loops.
+const fs = require("fs");
+const rep = fs.readFileSync("src/components/ClientErrorReporter.tsx", "utf8");
+const route = fs.readFileSync("src/app/api/client-error/route.ts", "utf8");
+const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
+const ge = fs.readFileSync("src/app/global-error.tsx", "utf8");
+let pass = 0, fail = 0;
+const t = (n, c) => { c ? pass++ : (fail++, console.log("FAIL", n)); };
+t("reporter mounted first in the layout", layout.indexOf("<ClientErrorReporter />") > -1 && layout.indexOf("<ClientErrorReporter />") < layout.indexOf("<PwaBootstrapMount />"));
+t("listens to errors and unhandled rejections", /addEventListener\("error"/.test(rep) && /unhandledrejection/.test(rep));
+t("detects reload loops (6 loads / 15 s)", /loads\.length >= 6/.test(rep) && /15000/.test(rep));
+t("keeps a screen trail", /sp_trail/.test(rep));
+t("uses sendBeacon so a dying page can still report", /sendBeacon/.test(rep));
+t("bounded per page load and deduplicated", /MAX_REPORTS_PER_LOAD/.test(rep) && /seen\.has/.test(rep));
+t("registration tokens are masked in the reported path", /token=…/.test(rep));
+t("endpoint caps every field", (route.match(/\.max\(/g) || []).length >= 6);
+t("endpoint is rate-limited per IP", /checkRateLimit\(db, `client-error:/.test(route));
+t("endpoint never fails the reporter", /catch \{ \/\* never fail the reporter \*\/ \}/.test(route));
+t("error boundary reports too", /kind: "boundary"/.test(ge));
+console.log(`test-client-error-reporter: ${pass} passed, ${fail} failed`);
+process.exit(fail ? 1 : 0);

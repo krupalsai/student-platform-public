@@ -1,0 +1,7 @@
+[build]
+  command = "echo 'Netlify builds disabled — using Vercel as primary host'"
+  publish = ".next"
+  ignore = "exit 0"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

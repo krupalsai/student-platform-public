@@ -1,0 +1,56 @@
+# Self-hosted open-source AI for the Student App assistant.
+# Runs on an Oracle Cloud Always Free ARM VM (4 OCPU / 24 GB). See README.md.
+#
+#   ollama  — runs the open-source model (CPU only; no GPU on the free tier)
+#   caddy   — public HTTPS + secret-token check; the ONLY thing exposed
+#
+# Ollama itself has no authentication, so it is never published to the
+# internet: only Caddy can reach it, and Caddy refuses every request that
+# does not carry the AI_TOKEN bearer secret.
+services:
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: "24h"     # keep the model in RAM between questions
+      OLLAMA_NUM_PARALLEL: "2"
+      OLLAMA_CONTEXT_LENGTH: "8192" # the assistant's prompt + student data + history
+    expose:
+      - "11434"
+
+  # One-shot: downloads the model on first start (a quick no-op afterwards)
+  # and warms it up.
+  # Retries until Ollama is up and the download succeeds.
+  model-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      - ollama
+    environment:
+      OLLAMA_HOST: "http://ollama:11434"
+    # The final `ollama run` loads the model into memory so the first student
+    # doesn't wait for it (OLLAMA_KEEP_ALIVE keeps it loaded afterwards).
+    entrypoint: ["/bin/sh", "-c", "until ollama pull ${AI_MODEL:-qwen2.5:3b}; do echo 'retrying in 10s'; sleep 10; done; ollama run ${AI_MODEL:-qwen2.5:3b} 'ok' >/dev/null && echo 'model loaded'"]
+    restart: "no"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      AI_DOMAIN: ${AI_DOMAIN:?set AI_DOMAIN in .env}
+      AI_TOKEN: ${AI_TOKEN:?set AI_TOKEN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  ollama:
+  caddy_data:
+  caddy_config:
