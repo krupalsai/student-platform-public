@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tg-bg: var(--tg-theme-bg-color, #ffffff);
+  --tg-text: var(--tg-theme-text-color, #000000);
+  --tg-btn: var(--tg-theme-button-color, #2481cc);
+  --tg-btn-text: var(--tg-theme-button-text-color, #ffffff);
+  --tg-secondary: var(--tg-theme-secondary-bg-color, #f2f2f7);
+  --tg-hint: var(--tg-theme-hint-color, #6e6e73);
+}
+
+html,
+body {
+  overscroll-behavior-y: none;
+  /* The app is light-only. Without this, a phone in dark mode paints the
+     page black while it loads (the browser default) — the "blank black
+     page" seen live 9 Nov 2026 on a slow root load. A light html
+     background means the first paint is already the app's canvas. */
+  background: #f2f2f7;
+  color-scheme: light;
+}
+
+/* iOS Safari zooms the page when a field under 16px takes focus. The viewport no longer blocks zoom
+   (WCAG 1.4.4), so keep fields at 16px on iOS only instead of locking zoom for everyone. */
+@supports (-webkit-touch-callout: none) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+body {
+  background: var(--tg-secondary);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Keep the Admin Students title/header visible while the roster scrolls. */
+.bg-blue-600.text-white.px-4.pt-10.pb-4 {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+
+/* Unslop (9 Nov 2026): the hero was a blue-to-lavender gradient with an
+   indigo glow and an animated wash — the classic AI-generated look. The
+   hero is now a flat, quiet surface; the product window is the one rich
+   element. No gradients, no glows, no loops. */
+.sp-marketing .sp-hero { background: #f7f8fa; animation: none; }
+.sp-marketing .sp-hero-glow { display: none; }
+.sp-marketing .sp-hero h1, .sp-marketing .sp-hero p, .sp-marketing .sp-hero a { animation: sp-enter .6s ease-out both; }
+.sp-marketing .sp-hero h1 { animation-delay: .08s; }
+.sp-marketing .sp-service-card { transition: border-color .25s ease, background-color .25s ease; }
+.sp-marketing .sp-service-card:hover { border-color: #c9d2de; background-color: #fbfcfd; }
+@keyframes sp-enter { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
+@media (prefers-reduced-motion: reduce) { .sp-marketing .sp-hero h1, .sp-marketing .sp-hero p, .sp-marketing .sp-hero a { animation: none } .sp-marketing .sp-service-card { transition: none } }
+
+
+
+/* Quiet, editorial motion: only the product illustration enters once, and only if allowed. */
+.sp-editorial .sp-hero { background: #f7f8fa; animation: none; }
+.sp-editorial .sp-hero-glow { display: none; }
+.sp-editorial .sp-product-scene { animation: sp-product-enter .9s cubic-bezier(.2,.7,.2,1) both; }
+.sp-editorial .sp-service-card { transition: border-color .35s cubic-bezier(.2,.7,.2,1), background-color .35s; }
+.sp-editorial .sp-service-card:hover { border-color: #ced8e5; background-color: #fbfcfd; }
+@keyframes sp-product-enter { from { opacity:0; transform:translateY(32px); } to { opacity:1; transform:translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .sp-editorial .sp-product-scene { animation:none; } .sp-editorial .sp-service-card { transition:none; } }
+
