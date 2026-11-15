@@ -1,0 +1,21 @@
+-- Adds WhatsApp-side support for the same one-time College ID re-upload
+-- correction that already exists via the web/Telegram Mini App
+-- (college_id_reupload_used on profiles, added earlier). Students who
+-- only ever interact via WhatsApp had no way to fix a bad ID upload
+-- (e.g. missing signature) short of contacting an admin manually.
+--
+-- awaiting_id_reupload: same pattern as awaiting_support_message — set
+-- when a student requests the re-upload, consumed (read + cleared) when
+-- their next image arrives, so the bot knows the very next photo they
+-- send is the corrected College ID and not just a random image.
+--
+-- college_id_ai_flag: read-only AI-assist result (Groq vision), same
+-- philosophy as payment-ocr.ts — never auto-decides anything, just
+-- surfaces "this looks like it might be missing a signature" so admins
+-- (and the proactive WhatsApp nudge) know to flag it faster than waiting
+-- for a student to notice on their own.
+--
+-- Already applied live in Supabase; this file brings the migration
+-- history in the repo back in sync with it.
+ALTER TABLE whatsapp_moderation ADD COLUMN IF NOT EXISTS awaiting_id_reupload boolean DEFAULT false;
+ALTER TABLE profiles            ADD COLUMN IF NOT EXISTS college_id_ai_flag jsonb;

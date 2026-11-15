@@ -1,0 +1,212 @@
+{
+  "note": "This JSON is the source of truth for these rows. The same content lives in the live `faqs` table (seeded 2026-10-26) and in supabase/migrations/0096_rag_corpus_faq_seed.sql (durable record). To extend: add a row here, add the matching INSERT to a new migration, and apply it \u2014 do not edit the live rows and this file separately or they drift. Three POC pairs were deliberately NOT ported: fee-01 (hardcodes Rs 2200 \u2014 fees are per-batch, the bot must use the student's own Payments tab / STUDENT CONTEXT, never a hardcoded amount), reg-01 (duplicates live FAQ 'How do I register'), fee-03 (duplicates live FAQ 'My payment failed'). fee-04 was ported with the hardcoded amount removed. support-02 was corrected to GNIT, GNITC and BIET to match the platform reference.",
+  "rows": [
+    {
+      "answer": "That message means you have not registered yet. Tap the Register on WhatsApp button on the login page. The WhatsApp bot will send you a registration link. Register first, then log in with the one-time link the bot sends you.",
+      "category": "registration",
+      "id": "reg-02",
+      "keywords": [
+        "login",
+        "mobile",
+        "number",
+        "registered",
+        "register"
+      ],
+      "question": "I tried to log in but it says my mobile number is not registered. What do I do?"
+    },
+    {
+      "answer": "No. The platform has no passwords. You log in with a one-time link sent to your registered WhatsApp number. The link works once and expires after 10 minutes. If it expires, ask the bot for a new one.",
+      "category": "registration",
+      "id": "reg-03",
+      "keywords": [
+        "password",
+        "login",
+        "link",
+        "whatsapp",
+        "expires"
+      ],
+      "question": "Do I need a password to log in to the Student Platform?"
+    },
+    {
+      "answer": "Pay on the platform's payment page using UPI, debit card, or credit card. Payments go through Razorpay. After payment, the system checks the payment automatically with the payment gateway. Do not send screenshots or UTR numbers \u2014 the verification is automatic.",
+      "category": "fees",
+      "id": "fee-02",
+      "keywords": [
+        "pay",
+        "fee",
+        "payment",
+        "upi",
+        "razorpay",
+        "card",
+        "methods"
+      ],
+      "question": "How do I pay the fee? Which payment methods work?"
+    },
+    {
+      "answer": "No. The fee is paid as one single total on the payment page, not in two parts. Check your Payments tab for the current amount.",
+      "category": "fees",
+      "id": "fee-04",
+      "keywords": [
+        "pay",
+        "fee",
+        "two",
+        "parts",
+        "installment",
+        "split"
+      ],
+      "question": "Can I pay the fee in two parts?"
+    },
+    {
+      "answer": "Open the case tracking section in the app. It shows your writ petition's live status from the High Court: Filed, Registered, Order, or Disposed. The app fetches the status automatically by case number, so you do not need to visit the court website.",
+      "category": "case-tracking",
+      "id": "case-01",
+      "keywords": [
+        "track",
+        "case",
+        "court",
+        "petition",
+        "status",
+        "high"
+      ],
+      "question": "How do I track my High Court case on the platform?"
+    },
+    {
+      "answer": "Disposed means the court has finished with the case and passed an order. For the student batches, the court directed the college to return the students' original certificates. After disposal, the next step is collecting the hard copy of the court order from the college.",
+      "category": "case-tracking",
+      "id": "case-02",
+      "keywords": [
+        "disposed",
+        "case",
+        "status",
+        "meaning",
+        "order",
+        "court"
+      ],
+      "question": "What does it mean when my case status says Disposed?"
+    },
+    {
+      "answer": "The college gives the hard copy a few days after the court order. The exact day is announced in your batch group. The person who receives the hard copy should prepare a reference copy using the sample in the app and share it in the batch group.",
+      "category": "case-tracking",
+      "id": "case-03",
+      "keywords": [
+        "hard",
+        "copy",
+        "court",
+        "order",
+        "when",
+        "collect"
+      ],
+      "question": "When will I get the hard copy of the court order?"
+    },
+    {
+      "answer": "The first-listed petitioner on the writ petition is the key person for the batch. The lawyer sends the hard copy of the court order to that one person, so the key person must be present at the college first to collect it.",
+      "category": "case-tracking",
+      "id": "case-04",
+      "keywords": [
+        "key",
+        "person",
+        "petitioner",
+        "batch",
+        "petition",
+        "first"
+      ],
+      "question": "Who is the key person for my batch's writ petition?"
+    },
+    {
+      "answer": "The court directed the college to return the original certificates of the petitioners. Collect them from the college after the court order. Carry your college ID card and any receipt the college asks for. The batch's key person collects the hard copy of the order first.",
+      "category": "certificates",
+      "id": "cert-01",
+      "keywords": [
+        "certificates",
+        "original",
+        "back",
+        "collect",
+        "college",
+        "return"
+      ],
+      "question": "How do I get my original certificates back from the college?"
+    },
+    {
+      "answer": "A no-due certificate is a document from the college saying you owe nothing \u2014 no pending fees and no pending dues. You can request it on the platform after your fee payment is verified. The platform generates it once the college confirms there are no dues.",
+      "category": "certificates",
+      "id": "cert-02",
+      "keywords": [
+        "no-due",
+        "certificate",
+        "dues",
+        "fees",
+        "request"
+      ],
+      "question": "What is a no-due certificate and how do I get one?"
+    },
+    {
+      "answer": "Clear the site data in your browser settings or reinstall the app from the install page. If the problem continues, type help in the WhatsApp support chat and follow the fix guide.",
+      "category": "app-help",
+      "id": "app-01",
+      "keywords": [
+        "app",
+        "stuck",
+        "blinking",
+        "fix",
+        "freeze",
+        "loading"
+      ],
+      "question": "The app is stuck or blinking. How do I fix it?"
+    },
+    {
+      "answer": "Check that the mobile number you registered with is the same number on your WhatsApp, and that WhatsApp is working. Wait two minutes, then ask the bot for a new link. The login link expires after 10 minutes, so open it as soon as it arrives.",
+      "category": "app-help",
+      "id": "app-02",
+      "keywords": [
+        "otp",
+        "login",
+        "link",
+        "whatsapp",
+        "receiving",
+        "code"
+      ],
+      "question": "I am not receiving the OTP or login link on WhatsApp. What do I do?"
+    },
+    {
+      "answer": "Tap the app link I sent you — it opens the Student App right in your browser. Register there and use it, no need to install anything. If you want the app on your home screen, open the link in Chrome and tap Install when Chrome offers it.",
+      "category": "app-help",
+      "id": "app-03",
+      "keywords": [
+        "install",
+        "app",
+        "phone",
+        "chrome",
+        "home",
+        "screen"
+      ],
+      "question": "How do I install the Student Platform app on my phone?"
+    },
+    {
+      "answer": "Message the Student Platform support bot on WhatsApp and type help. The bot shows common problems \u2014 app stuck, OTP not coming, number not registered, clear site data \u2014 and sends the fix for the one you tap. For money or refund problems, or a court date question, the bot passes it to the admin.",
+      "category": "support",
+      "id": "support-01",
+      "keywords": [
+        "contact",
+        "support",
+        "help",
+        "problem",
+        "whatsapp"
+      ],
+      "question": "How can I contact support if I have a problem?"
+    },
+    {
+      "answer": "The platform supports students of GNIT, GNITC and BIET in Hyderabad. Each college has its own batches, and each batch has its own writ petition and case tracking.",
+      "category": "support",
+      "id": "support-02",
+      "keywords": [
+        "colleges",
+        "support",
+        "gnit",
+        "gnitc",
+        "biet"
+      ],
+      "question": "Which colleges does the Student Platform support?"
+    }
+  ],
+  "source": "RAG assistant POC corpus (~/workspace/rag-assistant/corpus.json), ported to the platform's live FAQ store 2026-10-26."
+}

@@ -1,0 +1,12 @@
+-- Per-batch WhatsApp group invite link (item #119).
+--
+-- The bot cannot create a usable group itself: Meta's Groups API requires an
+-- Official Business Account and caps a group at 8 participants, while a batch
+-- here runs to 45+. So an admin creates the group in the WhatsApp app as
+-- normal and stores its chat.whatsapp.com invite link here; the bot sends it
+-- alongside the registration link.
+--
+-- Deliberately NOT reusing batches.telegram_invite_link (retired with
+-- Telegram): a column whose name says Telegram holding a WhatsApp link is the
+-- kind of confusion this file keeps having to undo.
+ALTER TABLE batches ADD COLUMN IF NOT EXISTS whatsapp_group_link text;

@@ -1,0 +1,13 @@
+-- Batch lifecycle stabilization (Round 1). Adds a 'pending_setup' status:
+-- when students start waiting for a college with no active batch, one
+-- pending_setup batch is auto-created immediately (fee_amount null —
+-- not yet known) instead of leaving students in limbo until an admin
+-- manually runs the full CREATE conversation. The admin then just needs
+-- to set the fee (and optionally capacity) to activate it, at which point
+-- the existing waitlist-processing logic auto-assigns everyone waiting.
+--
+-- The unique index is the actual race-condition guard: at most one batch
+-- per college can ever be in 'active' or 'pending_setup' state at the same
+-- time, enforced by Postgres itself — safe even if the waitlist-join
+-- endpoint gets hit by many concurrent requests for a brand-new college.
+ALTER TYPE batch_status ADD VALUE IF NOT EXISTS 'pending_setup';
