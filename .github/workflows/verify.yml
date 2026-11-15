@@ -1,0 +1,50 @@
+name: Verify Production Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Production build
+        # Placeholder values, not secrets. `next build` only needs these to be
+        # well-formed so it can compile and collect page data; Vercel builds
+        # separately with the real ones. Without them this step failed with
+        # "Missing SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_URL" on
+        # EVERY run — 300 consecutive failures — so the gate carried no signal
+        # about the code and real regressions shipped unnoticed underneath it.
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+          SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key
+          NEXT_PUBLIC_APP_URL: https://placeholder.invalid
+          CLOUDINARY_CLOUD_NAME: placeholder
+          CLOUDINARY_API_KEY: placeholder
+          CLOUDINARY_API_SECRET: placeholder
+        run: npm run build
+

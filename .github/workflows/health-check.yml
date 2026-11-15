@@ -1,0 +1,48 @@
+name: Health Check
+
+# Calls GET /api/cron/health-check on a schedule so system_errors actually
+# gets triaged and reported instead of sitting unread. See
+# docs/HEALTH_CHECK_SETUP.md for the full design and required secrets.
+#
+# Also calls /api/cron/self-watch so platform dependencies are checked
+# directly and actionable failures can be deduplicated.
+#
+# The response bodies are NOT printed as they are: workflow logs are visible to
+# anyone if the repository is ever made public, and a body can carry student
+# question text. Only a fixed set of counters is shown (jq picks the fields).
+# `shell: bash` turns on pipefail, so a failing curl still fails the step.
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "*/15 * * * *"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call health-check endpoint
+        shell: bash
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          APP_URL: ${{ secrets.APP_URL }}
+        run: |
+          if [ -z "$CRON_SECRET" ] || [ -z "$APP_URL" ]; then
+            echo "CRON_SECRET or APP_URL repo secret is not set — see docs/HEALTH_CHECK_SETUP.md. Skipping."
+            exit 0
+          fi
+          curl -sS -f -H "Authorization: Bearer $CRON_SECRET" "$APP_URL/api/cron/health-check" \
+            | jq -c '{ok, message, errors_processed, groups, ai_triage, engine}'
+
+      - name: Call self-watch endpoint
+        shell: bash
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          APP_URL: ${{ secrets.APP_URL }}
+        run: |
+          if [ -z "$CRON_SECRET" ] || [ -z "$APP_URL" ]; then
+            echo "CRON_SECRET or APP_URL repo secret is not set — see docs/HEALTH_CHECK_SETUP.md. Skipping."
+            exit 0
+          fi
+          curl -sS -f -H "Authorization: Bearer $CRON_SECRET" "$APP_URL/api/cron/self-watch" \
+            | jq -c '{ok, checked_at, problems, alerted_admins, razorpay_sweep, rolled_back: (.rollback != null), questions, faq_autopilot: (if .faq_autopilot then {reviewed: .faq_autopilot.reviewed, published: .faq_autopilot.published, rejected: .faq_autopilot.rejected, skipped: .faq_autopilot.skipped} else null end)}'

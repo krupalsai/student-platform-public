@@ -1,0 +1,73 @@
+name: Build Student Platform Knowledge Graph
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "supabase/migrations/**"
+      - "docs/**"
+      - "scripts/knowledge-graph/**"
+      - "package.json"
+      - ".github/workflows/**"
+      - "README.md"
+      - "tsconfig.json"
+      - "next.config.*"
+      - "vercel.json"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "supabase/migrations/**"
+      - "docs/**"
+      - "scripts/knowledge-graph/**"
+      - "package.json"
+      - ".github/workflows/**"
+      - "README.md"
+      - "tsconfig.json"
+      - "next.config.*"
+      - "vercel.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: student-platform-knowledge-graph-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run knowledge graph unit tests
+        run: npm run test:knowledge
+
+      - name: Build and validate graph (pull request, dry run)
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: node scripts/knowledge-graph/build.mjs
+
+      - name: Build, validate and publish graph (main or manual run)
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/knowledge-graph/build.mjs --require-persistence
