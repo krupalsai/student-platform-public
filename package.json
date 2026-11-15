@@ -1,0 +1,57 @@
+{
+  "name": "student-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "test": "vitest run",
+    "prebuild": "node scripts/fix-whatsapp-college-selection-build.js && node --check scripts/knowledge-graph/build.mjs && node --check scripts/knowledge-graph/graph-core.mjs",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc --noEmit",
+    "lint": "next lint",
+    "knowledge:build": "node scripts/knowledge-graph/build.mjs",
+    "test:knowledge": "node --test tests/knowledge-graph.test.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/app": "^8.1.1",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/push-notifications": "^8.1.2",
+    "@langchain/core": "^0.3.0",
+    "@langchain/groq": "^0.2.0",
+    "@langchain/langgraph": "^0.2.0",
+    "@supabase/supabase-js": "^2.49.0",
+    "cloudinary": "^2.5.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "docx": "^9.5.0",
+    "fflate": "^0.8.2",
+    "lucide-react": "^0.474.0",
+    "next": "15.5.27",
+    "qrcode": "^1.5.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "web-push": "^3.6.7",
+    "xlsx": "^0.18.2",
+    "zod": "^3.24.0"
+  },
+  "overrides": {
+    "zod": "$zod"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
+    "@types/node": "^22.0.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/web-push": "^3.6.4",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.5.27",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.0"
+  }
+}
