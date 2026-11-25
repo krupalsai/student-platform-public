@@ -433,7 +433,7 @@ function LetterCard() {
           aspectRatio: "3 / 4",
           borderRadius: 12,
           border: "1px solid #fecaca",
-          backgroundImage: "url(/route-map/hod-letter-example.jpg)",
+          backgroundImage: "url(/route-map/hod-letter-example.svg)",
           backgroundSize: "cover",
           backgroundPosition: "top center",
           WebkitUserSelect: "none",

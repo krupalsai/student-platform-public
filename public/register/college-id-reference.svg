@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="320" viewBox="0 0 520 320">
+<rect width="520" height="320" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="0" y="0" width="520" height="52" rx="16" fill="#1e40af"/>
+<rect x="0" y="36" width="520" height="16" fill="#1e40af"/>
+<text x="260" y="33" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="#ffffff">COLLEGE ID CARD — SAMPLE</text>
+<rect x="24" y="72" width="112" height="132" rx="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+<circle cx="80" cy="112" r="22" fill="#94a3b8"/>
+<path d="M50 204 L80 168 L110 204 Z" fill="#94a3b8"/>
+<text x="158" y="104" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="bold" fill="#111111">Sample Student</text>
+<text x="158" y="134" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#334155">B.Tech (CSE)</text>
+<text x="158" y="164" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#334155">Roll No: •• ••• ••••</text>
+<text x="158" y="194" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#334155">Sample College of Engineering</text>
+<text x="260" y="292" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#6b7280">SAMPLE — fictional card for reference only, not a real student</text>
+</svg>

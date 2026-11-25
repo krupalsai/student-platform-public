@@ -16,7 +16,7 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export async function GET(req: NextRequest) {
   const origin = req.nextUrl.origin;
-  const imageRes = await fetch(`${origin}/route-map/hod-letter-example.jpg`);
+  const imageRes = await fetch(`${origin}/route-map/hod-letter-example.svg`);
 
   if (!imageRes.ok) {
     return NextResponse.json({ error: "File not found" }, { status: 404 });
@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
 
   return new NextResponse(buffer, {
     headers: {
-      "Content-Type": "image/jpeg",
-      "Content-Disposition": 'attachment; filename="HOD-letter-template.jpg"',
+      "Content-Type": "image/svg+xml",
+      "Content-Disposition": 'attachment; filename="HOD-letter-template.svg"',
       "Cache-Control": "no-store",
     },
   });

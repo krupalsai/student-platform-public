@@ -45,7 +45,7 @@ At <https://www.duckdns.org> sign in, create a subdomain (e.g.
 
 ```bash
 ssh ubuntu@<public-ip>
-git clone https://github.com/krupalsai/student-platform.git
+git clone https://github.com/krupalsai/student-platform-public.git
 cd student-platform/ai-server
 bash setup.sh                    # installs Docker, opens 80/443, creates .env
 nano .env                        # set AI_DOMAIN and AI_TOKEN (openssl rand -hex 32)

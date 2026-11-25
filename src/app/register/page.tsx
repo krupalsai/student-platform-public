@@ -989,7 +989,7 @@ function RegisterPageInner() {
             <div className="mt-3 rounded-2xl border border-gray-100 bg-gray-50 p-3">
               <p className="text-[11px] font-semibold text-gray-500 mb-2">Reference — how your photo should look</p>
               <img
-                src="/register/college-id-reference.jpg"
+                src="/register/college-id-reference.svg"
                 alt="Sample College ID card showing correct framing — fictional student, for reference only"
                 className="w-full max-w-[260px] mx-auto block rounded-lg"
               />
